@@ -30,4 +30,4 @@ O sistema utiliza uma arquitetura relacional para conectar as entidades principa
 5. Inicie o servidor: `python manage.py runserver`.
 
 ---
-*Projeto desenvolvido por Lucas Vinicius Chimelli] como parte dos estudos de Desenvolvimento.*
+*Projeto desenvolvido por Lucas Vinicius Chimelli como parte dos estudos de Desenvolvimento.*
