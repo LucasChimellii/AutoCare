@@ -1,33 +1,70 @@
-AutoCare - Sistema de Gestão para Estética Automotiva
+# 🚗 AutoCare - Sistema de Gestão para Estética Automotiva
 
-O **AutoCare** é uma aplicação web desenvolvida em Python/Django para gerenciar o fluxo de trabalho em centros de detalhamento automotivo. O foco do projeto é a organização de ordens de serviço e a segurança jurídica através do registro de inspeção visual.
+> 🚧 **Status:** Em desenvolvimento (Fase de aprimoramento de UI/UX e regras de negócio).
 
-## 🛠️ Tecnologias e Ferramentas
-- **Linguagem:** Python 3+
-- **Framework:** Django 6.0
-- **Banco de Dados:** SQLite (Desenvolvimento)
-- **Manipulação de Imagens:** Pillow (Python Imaging Library)
-- **Versionamento:** Git & GitHub
+O **AutoCare** é uma aplicação web desenvolvida com Django (full-stack) para modernizar e gerenciar o fluxo de trabalho em centros de detalhamento automotivo e oficinas. 
 
-## Estrutura do Projeto
-O sistema utiliza uma arquitetura relacional para conectar as entidades principais:
-- **Clientes:** Cadastro de proprietários.
-- **Veículos:** Vinculados aos clientes (Relação 1:N).
-- **Serviços:** Controle de status, valores e datas.
-- **Inspeção Visual:** Sistema de fotos de avarias acoplado à Ordem de Serviço via `InlineAdmin`.
+O foco da arquitetura é resolver dois problemas reais do negócio: **segurança jurídica** (através do registro fotográfico no check-in do veículo) e **experiência do cliente** (rastreio do status do serviço em tempo real).
 
-## Funcionalidades Implementadas
-- [x] **Gestão de Avarias:** Upload de múltiplas fotos no check-in do veículo.
-- [x] **Painel Administrativo:** Customizado com filtros, buscas e tradução para PT-BR.
-- [x] **Integridade de Dados:** Uso de `on_delete=models.CASCADE` para limpeza automática de registros órfãos.
-- [x] **Localização:** Configuração de Timezone para registros precisos de entrada e saída.
+## 🛠️ Stack Tecnológica
 
-## 🚀 Como Executar o Projeto
-1. Clone este repositório.
-2. Crie um ambiente virtual: `python -m venv myenv`.
-3. Ative o ambiente e instale o Django e o Pillow: `pip install django pillow`.
-4. Execute as migrações: `python manage.py migrate`.
-5. Inicie o servidor: `python manage.py runserver`.
+**Atualmente em Desenvolvimento (MVP):**
+* **Back-end:** Python 3, Django
+* **Front-end:** HTML5, CSS3, Bootstrap 5 (Design Responsivo)
+* **Banco de Dados:** SQLite (ambiente de desenvolvimento)
+* **Manipulação de Mídia:** Pillow (Python Imaging Library)
+* **Controle de Versão:** Git & GitHub
 
----
-*Projeto desenvolvido por Lucas Vinicius Chimelli como parte dos estudos de Desenvolvimento.*
+**Arquitetura Futura (Roadmap):**
+* **Banco de Dados Relacional:** Migração estruturada para **PostgreSQL**.
+* **Deploy Cloud:** Hospedagem em nuvem (Render/Heroku) e armazenamento de estáticos/mídia na AWS S3.
+* **Automação:** Integração com API de mensageria (WhatsApp) para notificação automática de status aos clientes.
+
+## ⚙️ Funcionalidades Já Implementadas
+
+### 1. Motor de Busca Inteligente e Sanitização
+* **UX à prova de falhas:** Implementação de algoritmo na *View* que ignora traços, espaços e formatações incorretas digitadas pelo usuário na busca de placas.
+* **Defesa em Profundidade (Database):** Sobrescrita do método `save()` nos *Models* para garantir que os dados entrem no banco padronizados (maiúsculas, sem caracteres especiais), prevenindo corrupção de dados.
+* **Validação de Front-end:** Uso de atributos HTML nativos (`maxlength`, `oninput`) para bloquear inputs inválidos na raiz.
+
+### 2. Gestão de Avarias e Inspeção Visual
+* Upload de múltiplas fotos no momento do check-in do veículo.
+* Sistema acoplado à Ordem de Serviço via `InlineAdmin`, garantindo resguardo do prestador de serviço.
+
+### 3. Modelagem de Dados Relacional
+* Arquitetura de banco de dados conectando **Clientes**, **Veículos** (Relação 1:N) e **Serviços**.
+* Integridade referencial utilizando `on_delete=models.CASCADE` para limpeza automática de registros órfãos.
+
+### 4. Painel Administrativo Customizado
+* Área de gestão customizada com filtros nativos, barras de pesquisa e localização total para PT-BR (Timezone e Language).
+
+## 🚀 Como Executar o Projeto Localmente
+
+```bash
+# Clone o repositório
+git clone https://github.com/LucasChimellii/AutoCare.git
+cd AutoCare
+
+# Crie um ambiente virtual
+python -m venv venv
+
+# Ative o ambiente virtual
+# Windows
+venv\Scripts\activate
+
+# Linux/macOS
+source venv/bin/activate
+
+# Instale as dependências
+pip install -r requirements.txt
+
+# Execute as migrações
+python manage.py migrate
+
+# Inicie o servidor
+python manage.py runserver
+
+## 👨‍💻 Autor
+
+**Lucas Vinicius Chimelli Corrêa**  
+🔗 https://github.com/LucasChimellii
