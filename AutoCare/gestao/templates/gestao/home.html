@@ -24,19 +24,33 @@
         <div class="card-body">
             <p><strong>Veículo:</strong> {{servico.carro}}</p>
             <p><strong>Placa:</strong> {{ servico.carro.placa }}</p>
-            <p><strong>Status Atual:</strong> 
-            {% if servico.status_servico == 'Pendente' %}
+            <p><strong>Data de entrada: </strong> {{ servico.data_entrada }}</p> 
+
+            {% if servico.status_servico == 'CONCLUIDO' %}
+                <p><strong>Data de saída:</strong> {{ servico.data_saida }}</p>
+
+            {% endif %}
+
+            <p><strong>Status: </strong>
+
+            {% if servico.status_servico == 'NA FILA' %}
                 <span class="badge bg-warning text-dark">Pendente</span>
-            {% elif servico.status_servico == 'Em andamento' %}
+            {% elif servico.status_servico == 'EM ANDAMENTO' %}
                 <span class="badge bg-primary">Em andamento</span>
-            {% elif servico.status_servico == 'Concluido' %}
+            {% elif servico.status_servico == 'CONCLUIDO' %}
                 <span class="badge bg-success">Concluído</span>
             {% else %}
                 <span class="badge bg-secondary">{{ servico.status_servico }}</span>
             {% endif %}
             </p>
-            <p><strong>Data de entrada: </strong> {{ servico.data_entrada}}
             <p><strong>Serviço:</strong> {{servico.descricao}}</p>
+            {% if servico.status_servico == 'CONCLUIDO' %}
+                <a href="https://wa.me/{{ servico.carro.cliente.get_whatsapp_number }}?text=Olá%20{{ servico.carro.cliente.nome }}!%20O%20serviço%20no%20seu%20{{ servico.carro.marca }} {{ servico.carro.modelo }}%20foi%20concluído%20na%20AutoCare.%20Já%20pode%20vir%20buscar!%20🚗" 
+                target="_blank" 
+                class="btn btn-success d-grid gap-2 mt-3 shadow-sm">
+                Avisar Cliente no WhatsApp 📱
+                </a>
+            {% endif %}
         </div>
         
     </div> {% elif placa_buscada %}

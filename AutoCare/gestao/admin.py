@@ -16,3 +16,4 @@ class ServicoAdmin(admin.ModelAdmin):
     
 admin.site.register(Servico, ServicoAdmin)
 
+
