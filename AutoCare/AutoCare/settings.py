@@ -25,12 +25,12 @@ SECRET_KEY = 'django-insecure-m#y=m!q@5&z)px10ba-hhssty)d&67v7(a8b3e^e*teycm#347
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.1.8', '127.0.0.1']
-
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -118,3 +118,37 @@ USE_TZ = True
 STATIC_URL = 'static/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+# ==========================================
+# CUSTOMIZAÇÃO DO PAINEL ADMIN (JAZZMIN)
+# ==========================================
+
+JAZZMIN_SETTINGS = {
+    # Textos da aba do navegador e login
+    "site_title": "AutoCare Admin",
+    "site_header": "AutoCare",
+    "site_brand": "AutoCare 🚗",
+    "welcome_sign": "Bem-vindo ao Sistema AutoCare",
+    "copyright": "AutoCare Gestão Automotiva",
+    
+    # Ícones do menu lateral (FontAwesome)
+    "icons": {
+        "gestao.Cliente": "fas fa-users",
+        "gestao.Carro": "fas fa-car",
+        "gestao.Servico": "fas fa-tools",
+        "gestao.FotoAvaria": "fas fa-camera",
+        "auth.Group": "fas fa-users-cog",
+        "auth.User": "fas fa-user-shield",
+    },
+    
+    # "hide_models": ["auth.Group"],
+
+
+    # Força a ordem exata que o mecânico vai usar no dia a dia
+    "order_with_respect_to": [
+        "gestao.Cliente", 
+        "gestao.Carro", 
+        "gestao.Servico", 
+        "gestao.FotoAvaria"
+    ],
+}
