@@ -11,7 +11,7 @@ class Cliente(models.Model):
         if self.telefone:
             # Pega a string e junta apenas os caracteres que são dígitos (0 a 9)
             self.telefone = "".join(filter(str.isdigit, self.telefone))
-            
+
         super().save(*args, **kwargs)
 
     def get_whatsapp_number(self):
@@ -32,16 +32,16 @@ class Carro(models.Model):
     ano = models.IntegerField()
 
     def save(self, *args, **kwargs):
-        # Converte automaticamente quando cadastrado no banco de dados para um formato de placa geral 
+        # Converte automaticamente quando cadastrado no banco de dados para um formato de placa geral
         if self.placa:
             self.placa = self.placa.replace('-', '').replace(' ', '').strip().upper()
-        
+
         super().save(*args, **kwargs)
 
 
     def __str__(self):
-        return (f'{self.marca} - {self.modelo}')
-    
+        return (f'{self.marca} - {self.modelo} - ({self.cliente.nome})')
+
 
 class Servico(models.Model):
     carro = models.ForeignKey (Carro, on_delete=models.CASCADE)
@@ -62,7 +62,7 @@ class Servico(models.Model):
     descricao = models.CharField(max_length=200, null=True, blank= True)
     data_entrada = models.DateTimeField(auto_now_add=True)
     data_saida = models.DateTimeField(null=True, blank=True)
-    
+
     def save(self, *args, **kwargs):
 
         if self.status_servico == 'CONCLUIDO' and not self.data_saida:

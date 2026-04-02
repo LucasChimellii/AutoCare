@@ -2,6 +2,7 @@ from django.contrib import admin
 from .models import Cliente, Carro, Servico, FotoAvaria
 from django.utils.html import format_html
 from django.http import HttpResponseRedirect
+from django.db.models import Sum, Avg, Count, Q
 
 admin.site.register(Cliente)
 admin.site.register(Carro)
@@ -31,39 +32,39 @@ class ServicoAdmin(admin.ModelAdmin):
 
         if status == 'CONCLUIDO':
             link = f"https://wa.me/{numero}?text=Olá {nome}! O serviço no seu {veiculo} foi concluído na AutoCare. Já pode vir buscar! 🚗"
-            
+
             return format_html(
                 '<a style="background-color: #28a745; color: white; padding: 5px 10px; border-radius: 4px; text-decoration: none; font-weight: bold;" href="{}" target="_blank">📲 Avisar Cliente (Concluído) </a>',
                 link
             )
-        
+
 
         elif status ==  'EM ANDAMENTO':
             link = f"https://wa.me/{numero}?text=Olá {nome}! O serviço no seu {veiculo} foi iniciado na AutoCare. Daqui a pouquinho te daremos mais informações! 🚗"
-            
+
             return format_html(
                 '<a style="background-color: #28a745; color: white; padding: 5px 10px; border-radius: 4px; text-decoration: none; font-weight: bold;" href="{}" target="_blank">📲 Avisar Cliente (Serviço iniciado) </a>',
                 link
             )
-        
-        return "-"           
-            
+
+        return "-"
+
     botao_whatsapp.short_description = 'Notificação'
 
 
 
     def render_change_form(self, request, context, add=False, change=False, form_url='', obj=None):
         # Deixa apenas o botão "Salvar" nativo do Django
-        context['show_save_and_add_another'] = False 
-        context['show_save_and_continue'] = False 
-        context['show_history'] = False  
-        context['show_close'] = False 
-        
+        context['show_save_and_add_another'] = False
+        context['show_save_and_continue'] = False
+        context['show_history'] = False
+        context['show_close'] = False
+
         return super().render_change_form(request, context, add, change, form_url, obj)
 
     # O GOLPE DE MESTRE 1: Quando edita um serviço existente
     def response_change(self, request, obj):
-        
+
         response = super().response_change(request, obj)
         if "_save" in request.POST:
             return HttpResponseRedirect(request.path)
@@ -76,6 +77,22 @@ class ServicoAdmin(admin.ModelAdmin):
         if "_save" in request.POST:
             return HttpResponseRedirect(f"../{obj.pk}/change/")
         return response
+
+    def changelist_view(self, request, extra_context=None):
+        # 1. Fazemos os cálculos direto no Banco de Dados (muito mais rápido)
+        stats = Servico.objects.aggregate(
+            total_faturado=Sum('valor', filter=Q(status_servico='CONCLUIDO')),
+            ticket_medio=Avg('valor', filter=Q(status_servico='CONCLUIDO')),
+            carros_na_fila=Count('id', filter=Q(status_servico='NA FILA')),
+            carros_em_servico=Count('id', filter=Q(status_servico='EM ANDAMENTO'))
+        )
+
+        # 2. Empacotamos esses cálculos para mandar para a interface visual depois
+        extra_context = extra_context or {}
+        extra_context['stats'] = stats
+
+        return super().changelist_view(request, extra_context=extra_context)
+
 
 
 admin.site.register(Servico, ServicoAdmin)

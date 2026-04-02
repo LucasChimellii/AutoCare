@@ -11,6 +11,10 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 from pathlib import Path
+import os
+from dotenv import load_dotenv
+
+load_dotenv() # Isso carrega as variáveis do arquivo .env
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-m#y=m!q@5&z)px10ba-hhssty)d&67v7(a8b3e^e*teycm#347'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -75,11 +79,14 @@ WSGI_APPLICATION = 'AutoCare.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('DB_NAME'),
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'HOST': os.getenv('DB_HOST'),
+        'PORT': os.getenv('DB_PORT'),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators
@@ -130,7 +137,7 @@ JAZZMIN_SETTINGS = {
     "site_brand": "AutoCare 🚗",
     "welcome_sign": "Bem-vindo ao Sistema AutoCare",
     "copyright": "AutoCare Gestão Automotiva",
-    
+
     # Ícones do menu lateral (FontAwesome)
     "icons": {
         "gestao.Cliente": "fas fa-users",
@@ -140,15 +147,15 @@ JAZZMIN_SETTINGS = {
         "auth.Group": "fas fa-users-cog",
         "auth.User": "fas fa-user-shield",
     },
-    
+
     # "hide_models": ["auth.Group"],
 
 
     # Força a ordem exata que o mecânico vai usar no dia a dia
     "order_with_respect_to": [
-        "gestao.Cliente", 
-        "gestao.Carro", 
-        "gestao.Servico", 
+        "gestao.Cliente",
+        "gestao.Carro",
+        "gestao.Servico",
         "gestao.FotoAvaria"
     ],
 }

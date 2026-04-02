@@ -1,0 +1,49 @@
+{% extends "admin/change_list.html" %}
+
+{% block result_list %}
+    <div class="row mb-4">
+
+        <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box bg-success shadow-sm">
+                <span class="info-box-icon"><i class="fas fa-dollar-sign"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Faturamento (Concluídos)</span>
+                    <span class="info-box-number">R$ {{ stats.total_faturado|default:"0.00"|floatformat:2 }}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box bg-info shadow-sm">
+                <span class="info-box-icon"><i class="fas fa-chart-line"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Ticket Médio</span>
+                    <span class="info-box-number">R$ {{ stats.ticket_medio|default:"0.00"|floatformat:2 }}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box bg-primary shadow-sm">
+                <span class="info-box-icon"><i class="fas fa-tools"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Em Andamento</span>
+                    <span class="info-box-number">{{ stats.carros_em_servico|default:"0" }}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-md-3">
+            <div class="info-box bg-warning shadow-sm">
+                <span class="info-box-icon"><i class="fas fa-clock text-dark"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text text-dark">Na Fila</span>
+                    <span class="info-box-number text-dark">{{ stats.carros_na_fila|default:"0" }}</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    {{ block.super }}
+{% endblock %}
