@@ -62,7 +62,7 @@ class ServicoAdmin(admin.ModelAdmin):
 
         return super().render_change_form(request, context, add, change, form_url, obj)
 
-    # O GOLPE DE MESTRE 1: Quando edita um serviço existente
+        #Quando edita um serviço existente
     def response_change(self, request, obj):
 
         response = super().response_change(request, obj)
@@ -79,7 +79,7 @@ class ServicoAdmin(admin.ModelAdmin):
         return response
 
     def changelist_view(self, request, extra_context=None):
-        # 1. Fazemos os cálculos direto no Banco de Dados (muito mais rápido)
+        # 1. Fazemos os cálculos direto no Banco de Dados
         stats = Servico.objects.aggregate(
             total_faturado=Sum('valor', filter=Q(status_servico='CONCLUIDO')),
             ticket_medio=Avg('valor', filter=Q(status_servico='CONCLUIDO')),
@@ -87,7 +87,7 @@ class ServicoAdmin(admin.ModelAdmin):
             carros_em_servico=Count('id', filter=Q(status_servico='EM ANDAMENTO'))
         )
 
-        # 2. Empacotamos esses cálculos para mandar para a interface visual depois
+        # 2. Empacotar esses cálculos para mandar para a interface visual depois
         extra_context = extra_context or {}
         extra_context['stats'] = stats
 
