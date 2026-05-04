@@ -30,7 +30,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-
+CSRF_TRUSTED_ORIGINS = ['https://0357-2804-d55-5e46-6500-3d1d-b0a8-a869-a2.ngrok-free.app']
 # Application definition
 
 INSTALLED_APPS = [
@@ -148,14 +148,81 @@ JAZZMIN_SETTINGS = {
         "auth.User": "fas fa-user-shield",
     },
 
-    # "hide_models": ["auth.Group"],
-
-
-    # Força a ordem exata que o mecânico vai usar no dia a dia
     "order_with_respect_to": [
         "gestao.Cliente",
         "gestao.Carro",
         "gestao.Servico",
         "gestao.FotoAvaria"
     ],
+
+    # Menu lateral com links diretos
+    "topmenu_links": [
+        {"name": "Início", "url": "admin:index", "permissions": ["auth.view_user"]},
+        {"name": "Ver Site", "url": "/", "new_window": True},
+    ],
+
+    # Atalhos rápidos no menu lateral
+    "usermenu_links": [
+        {"name": "Suporte", "url": "#", "icon": "fas fa-question-circle"},
+    ],
+
+    # Sidebar
+    "show_sidebar": True,
+    "navigation_expanded": True,
+    "hide_apps": ["auth"],  # Esconde auth do menu se quiser deixar mais limpo — remova se precisar
+    "hide_models": ["gestao.FotoAvaria"],  # FotoAvaria só aparece como inline no Serviço
+
+    # Botões de ação
+    "related_modal_active": True,  # Abre FK em modal ao invés de nova aba
+
+    # Ícone padrão para modelos sem ícone definido
+    "default_icon_parents": "fas fa-folder",
+    "default_icon_children": "fas fa-circle",
+
+    # Interface
+    "changeform_format": "horizontal_tabs",  # abas horizontais no formulário
+    "language_chooser": False,
+}
+
+JAZZMIN_UI_TWEAKS = {
+    "navbar_small_text": False,
+    "footer_small_text": False,
+    "body_small_text": False,
+    "brand_small_text": False,
+
+    # Tema de cores — opções: primary, secondary, info, warning, danger, dark
+    "brand_colour": "navbar-dark",
+    "accent": "accent-primary",
+
+    # Navbar e sidebar escuros
+    "navbar": "navbar-dark",
+    "no_navbar_border": True,
+    "navbar_fixed": True,       # Navbar fixa no topo ao rolar
+
+    "layout_boxed": False,
+    "footer_fixed": False,
+    "sidebar_fixed": True,      # Sidebar fixa
+
+    # Cor da sidebar — opções: sidebar-dark-primary, sidebar-dark-danger, sidebar-light-*
+    "sidebar": "sidebar-dark-primary",
+    "sidebar_nav_small_text": False,
+    "sidebar_disable_expand": False,
+    "sidebar_nav_child_indent": True,
+    "sidebar_nav_compact_style": False,
+    "sidebar_nav_legacy_style": False,
+    "sidebar_nav_flat_style": True,   # Visual flat/moderno
+
+    # Tema geral — opções: darkly, cyborg, flatly, litera, lumen, minty, pulse, sandstone, simplex, slate, solar, spacelab, superhero, united, yeti
+    "theme": "united",
+    "dark_mode_theme": "united",
+
+    # Botões
+    "button_classes": {
+        "primary": "btn-primary",
+        "secondary": "btn-secondary",
+        "info": "btn-info",
+        "warning": "btn-warning",
+        "danger": "btn-danger",
+        "success": "btn-success",
+    },
 }

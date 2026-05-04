@@ -4,8 +4,13 @@ from django.utils.html import format_html
 from django.http import HttpResponseRedirect
 from django.db.models import Sum, Avg, Count, Q
 
-admin.site.register(Cliente)
 admin.site.register(Carro)
+
+@admin.register(Cliente)
+class ClienteAdmin(admin.ModelAdmin):
+    search_fields = ['nome', 'telefone']
+    list_display = ['nome', 'telefone', 'email']
+
 
 class FotoAvariaInline(admin.TabularInline):
     model = FotoAvaria

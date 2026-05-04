@@ -1,17 +1,24 @@
 from django.db import models
-from django.utils import timezone
+from django.core.exceptions import ValidationError
 
 class Cliente(models.Model):
     nome = models.CharField(max_length=100)
-    telefone = models.CharField(max_length=15, help_text="Ex: (41) 99999-9999")
+    telefone = models.CharField(max_length=15, unique=True, help_text="Ex: (41) 99999-9999")
     email = models.EmailField(null=True, blank=True)
 
-    def save(self, *args, **kwargs):
-        # Filtra o telefone para manter APENAS números
+    # Valida o telefone para garantir que não haja duplicatas, mesmo que sejam formatados de maneira diferente (com ou sem parênteses, traços, etc.)
+    def clean(self):
         if self.telefone:
-            # Pega a string e junta apenas os caracteres que são dígitos (0 a 9)
-            self.telefone = "".join(filter(str.isdigit, self.telefone))
+            telefone_formatado = "".join(filter(str.isdigit, self.telefone))
+            existe = Cliente.objects.filter(telefone=telefone_formatado).exclude(pk=self.pk).exists()
+            if existe:
+                raise ValidationError({"telefone": "Já existe um cliente com esse telefone."})
 
+    def save(self, *args, **kwargs):
+        if self.telefone:
+            self.telefone = "".join(filter(str.isdigit, self.telefone))
+        
+        self.full_clean()  # Dispara o clean() antes de salvar
         super().save(*args, **kwargs)
 
     def get_whatsapp_number(self):
@@ -73,6 +80,9 @@ class Servico(models.Model):
 
     def __str__(self):
         return (f'{self.carro}, {self.carro.cliente}, {self.carro.placa}, {self.status_servico}, {self.data_entrada}')
+
+    class Meta:
+        ordering = ['-data_entrada', '-id']
 
 class FotoAvaria(models.Model):
     servico = models.ForeignKey(Servico, on_delete=models.CASCADE)
