@@ -159,6 +159,8 @@ python manage.py migrate
 
 # Rodar servidor
 python manage.py runserver
+
+abas: home (Cliente) e admin (Gerenciamento)
 ```
 
 ---
@@ -245,7 +247,7 @@ Abaixo estão as principais telas do sistema AutoCare, demonstrando o fluxo comp
 
 ---
 
-### 👤 Portal do Cliente
+### 👤 Portal do Cliente 
 
 #### 🏠 Tela do Cliente (consulta de status)
 
