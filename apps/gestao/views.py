@@ -15,4 +15,4 @@ def pagina_inicial(request):
         'placa_buscada': placa_formatada,
     }
 
-    return render(request, 'gestao/home.html', contexto)
+    return render(request, 'user_home/home.html', contexto)

@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.exceptions import ValidationError
+from django.utils import timezone
 
 class Cliente(models.Model):
     nome = models.CharField(max_length=100)
